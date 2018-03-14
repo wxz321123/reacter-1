@@ -58,6 +58,7 @@ class GreetingInput extends Component {
 
 
 
+    // 语法要点：箭头函数和函数的this指针
     // 可以试着注释掉这一行看看结果
     // 会提示this指针是: undefined，而没有定义的指针，执行this.setState是会出错的
     //若没有注释，则提示的是：this指针是: GreetingInput，也就是本类的一个实例
@@ -100,11 +101,11 @@ const App=(props,context)=>{
   // 同时注意，现在为Greeting组件指定who属性，已经没有意义，被忽略
   return (
     <div>
-      <Greeting defaultWho={'world'} />
-      <GreetingInput />
+      <Greeting defaultWho={props.defaultWho} />
+      <GreetingInput defaultWho={props.defaultWho}/>
     </div>
   )
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App defaultWho={'world'}/>, document.getElementById('root'));
 
