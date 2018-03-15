@@ -1,5 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component,createContext } from 'react';
 import ReactDOM from 'react-dom';
+
+//创建一个context对象WhoContext
+//其中WhoContext.Provider是一个组件，提供context
+//WhoContext.Consumer也是一个组件，在Provider的组件树中消费该context
+const WhoContext = React.createContext({who:'world'})
 
 class Greeting extends Component {
 
@@ -99,11 +104,21 @@ const App=(props,context)=>{
   // 分别点击，可以看到：两个按钮得状态是不同得
   // 换言之：组件得不同实例，拥有各自得状态，这和通常得类和实例得关系一致
   // 同时注意，现在为Greeting组件指定who属性，已经没有意义，被忽略
+
+  // WhoContext.Provider定义context,其值为一个对象{who:'worldFromContext'}
+  //  <WhoContext.Consumer>则用来包裹组件，该组件消费(使用)刚刚定义的context里的内容
+  // 注意，其子控件必须用{}，这是典型的render props抽象模式
+  // (context)=><Greeting defaultWho={context.who} />定义了一个函数型的组件，注意这里的conntext参数
+  // defaultWho={context.who},在这里使用了context的who字段
   return (
-    <div>
-      <Greeting defaultWho={props.defaultWho} />
+    <WhoContext.Provider value={{who:'worldFromContext'}}>
+      <WhoContext.Consumer>
+        {
+          (context)=><Greeting defaultWho={context.who} />
+        }
+      </WhoContext.Consumer>
       <GreetingInput defaultWho={props.defaultWho}/>
-    </div>
+    </WhoContext.Provider>
   )
 }
 
